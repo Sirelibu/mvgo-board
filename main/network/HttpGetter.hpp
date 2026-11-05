@@ -15,5 +15,6 @@ public:
 private:
     static constexpr char MVG_URL[] =
     "https://www.mvg.de/api/bgw-pt/v3/departures"
-    "?globalId=de:09162:1740&limit=5";
+    "?globalId=de:09162:1740"
+    "&limit=15";
 };

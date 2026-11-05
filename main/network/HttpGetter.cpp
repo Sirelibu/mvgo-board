@@ -45,19 +45,6 @@ std::optional<std::string> HttpGetter::fetchDepartures() {
         int status = esp_http_client_get_status_code(client);
 
         ESP_LOGI(TAG, "HTTP status: %d", status);
-        /*
-        // Print in chunks to avoid excessively long log lines.
-        constexpr size_t CHUNK_SIZE = 256;
-
-        for (size_t i = 0; i < response.size(); i += CHUNK_SIZE) {
-            ESP_LOGI(TAG, "%.*s",
-                static_cast<int>(
-                    std::min(CHUNK_SIZE, response.size() - i)
-                ),
-                response.data() + i
-            );
-        }
-        */
     } else {
         ESP_LOGE(TAG, "HTTP request failed: %s",
                  esp_err_to_name(err));

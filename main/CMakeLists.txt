@@ -2,14 +2,18 @@ idf_component_register(SRCS
                         "main.cpp"
                         "network/HttpGetter.cpp"
                         "network/Wifi.cpp"
+                        "parser/Parser.cpp"
                     INCLUDE_DIRS 
                         "."
                         "network"
                         "common"
+                        "parser"
+                        "departure"
                     PRIV_REQUIRES
                     esp_http_client
                     esp_wifi
                     esp_event
                     esp_netif
                     nvs_flash
-                    mbedtls)
+                    mbedtls
+                    espressif__cjson)

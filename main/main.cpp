@@ -4,9 +4,25 @@
 #include "network/HttpGetter.hpp"
 #include "network/Wifi.hpp"
 #include "common/Constants.hpp"
+#include "parser/Parser.hpp"
+
+#include <chrono>
+
+std::tm getDepartureTime(int64_t timestampMs) {
+    const time_t seconds =
+        static_cast<time_t>(timestampMs / 1000);
+
+    std::tm local{};
+    localtime_r(&seconds, &local);
+    return local;
+}
 
 
 extern "C" void app_main(void) {
+    /* set Munchen timezone */
+    // setenv("TZ", "CET-1CEST,M3.5.0,M10.5.0/3", 1);
+    // tzset();
+
     esp_err_t err = nvs_flash_init();
 
     if (err == ESP_ERR_NVS_NO_FREE_PAGES ||
@@ -24,8 +40,18 @@ extern "C" void app_main(void) {
         if (not response) {
             ESP_LOGE(TAG, "HTTP request failed.");
         } else {
-            ESP_LOGI(TAG, "Response size: %u",
-                 static_cast<unsigned>(response->size()));
+            const auto departures = parser::parseHttpResp(*response);
+
+            for (const auto& departure : departures) {
+                ESP_LOGI(
+                    TAG,
+                    "%s -> %s, depart: %02d:%02d",
+                    departure.label.c_str(),
+                    departure.destination.c_str(),
+                    getDepartureTime(departure.realtimeDepartureTime).tm_hour,
+                    getDepartureTime(departure.realtimeDepartureTime).tm_min
+                );
+            }
         }
         vTaskDelay(pdMS_TO_TICKS(60000));
     }
