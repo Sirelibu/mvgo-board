@@ -1,0 +1,15 @@
+idf_component_register(SRCS 
+                        "main.cpp"
+                        "network/HttpGetter.cpp"
+                        "network/Wifi.cpp"
+                    INCLUDE_DIRS 
+                        "."
+                        "network"
+                        "common"
+                    PRIV_REQUIRES
+                    esp_http_client
+                    esp_wifi
+                    esp_event
+                    esp_netif
+                    nvs_flash
+                    mbedtls)
