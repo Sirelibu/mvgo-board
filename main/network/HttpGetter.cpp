@@ -20,11 +20,16 @@ esp_err_t httpEventHandler(esp_http_client_event_t* event) {
 }
 }
 
-std::optional<std::string> HttpGetter::fetchDepartures() {
+std::string HttpGetter::getUrl() const {
+    return std::string(MVG_URL) + "?globalId=" + globalId + "&limit=" + std::to_string(limit);
+}
+
+std::optional<std::string> HttpGetter::fetchDepartures() const {
     std::string response;
 
     esp_http_client_config_t config = {};
-    config.url = MVG_URL;
+    std::string url = getUrl();
+    config.url = url.c_str();
     config.method = HTTP_METHOD_GET;
     config.event_handler = httpEventHandler;
     config.user_data = &response;
@@ -43,11 +48,9 @@ std::optional<std::string> HttpGetter::fetchDepartures() {
 
     if (err == ESP_OK) {
         int status = esp_http_client_get_status_code(client);
-
         ESP_LOGI(TAG, "HTTP status: %d", status);
     } else {
-        ESP_LOGE(TAG, "HTTP request failed: %s",
-                 esp_err_to_name(err));
+        ESP_LOGE(TAG, "HTTP request failed: %s", esp_err_to_name(err));
         esp_http_client_cleanup(client);
         return std::nullopt;
     }

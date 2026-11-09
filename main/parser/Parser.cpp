@@ -19,7 +19,7 @@ std::optional<std::string> getString(const cJSON* object, const char* key) {
     const cJSON* item = cJSON_GetObjectItemCaseSensitive(object, key);
 
     if (!cJSON_IsString(item) || item->valuestring == nullptr) {
-        ESP_LOGE(TAG, "Missing or invalid timestamp: %s", key);
+        ESP_LOGE(TAG, "Missing or invalid string: %s", key);
         return std::nullopt;
     }
 

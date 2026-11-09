@@ -8,13 +8,14 @@
 
 class HttpGetter {
 public:
-    HttpGetter() {}
+    HttpGetter(const std::string& globalId, unsigned limit = 15) : globalId(globalId), limit(limit) {}
 
-    std::optional<std::string> fetchDepartures();
-
+    std::optional<std::string> fetchDepartures() const;
 private:
+    std::string getUrl() const;
+
     static constexpr char MVG_URL[] =
-    "https://www.mvg.de/api/bgw-pt/v3/departures"
-    "?globalId=de:09162:1740"
-    "&limit=15";
+    "https://www.mvg.de/api/bgw-pt/v3/departures";
+    std::string globalId;
+    unsigned limit;
 };

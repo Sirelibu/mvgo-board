@@ -3,12 +3,14 @@ idf_component_register(SRCS
                         "network/HttpGetter.cpp"
                         "network/Wifi.cpp"
                         "parser/Parser.cpp"
+                        "board/Board.cpp"
                     INCLUDE_DIRS 
                         "."
                         "network"
                         "common"
                         "parser"
                         "departure"
+                        "board"
                     PRIV_REQUIRES
                     esp_http_client
                     esp_wifi
